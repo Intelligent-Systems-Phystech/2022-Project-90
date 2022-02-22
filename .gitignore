@@ -120,3 +120,14 @@ logs/
 */mnist
 *.csv
 !.dvc
+
+# PdfLatex compilation files
+*.aux
+*.bbl
+*.blg
+*.gz
+*.log
+*.nav
+*.out
+*.snm
+*.toc

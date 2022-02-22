@@ -15,28 +15,21 @@
 \usepackage{doi}
 
 
+\renewcommand{\shorttitle}{\textit{arXiv} Template}
+\renewcommand{\abstractname}{Аннотация}
 
-\title{A template for the \emph{arxiv} style}
+\title{Восстановление движения руки по видео}
 
-\author{ David S.~Hippocampus\thanks{Use footnote for providing further
-		information about author (webpage, alternative
-		address)---\emph{not} for acknowledging funding agencies.} \\
-	Department of Computer Science\\
-	Cranberry-Lemon University\\
-	Pittsburgh, PA 15213 \\
-	\texttt{hippo@cs.cranberry-lemon.edu} \\
-	%% examples of more authors
+\author{Владимиров Эдуард \\
+	\texttt{vladimirov.ea@phystech.edu} \\
+
 	\And
-	Elias D.~Striatum \\
-	Department of Electrical Engineering\\
-	Mount-Sheikh University\\
-	Santa Narimana, Levand \\
-	\texttt{stariate@ee.mount-sheikh.edu} \\
-	%% \AND
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
+	Исаченко Роман \\
+	\texttt{isa-ro@yandex.ru} \\
+	
+	\And
+	Курдюкова Антонина \\
+	\texttt{kurdiukova.ad@phystech.edu} \\
 	%% \And
 	%% Coauthor \\
 	%% Affiliation \\
@@ -48,19 +41,17 @@
 	%% Address \\
 	%% \texttt{email} \\
 }
-\date{}
-
-\renewcommand{\shorttitle}{\textit{arXiv} Template}
+\date{\today}
 
 %%% Add PDF metadata to help others organize their library
 %%% Once the PDF is generated, you can check the metadata with
 %%% $ pdfinfo template.pdf
-\hypersetup{
-pdftitle={A template for the arxiv style},
-pdfsubject={q-bio.NC, q-bio.QM},
-pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
-pdfkeywords={First keyword, Second keyword, More},
-}
+% \hypersetup{
+% pdftitle={A template for the arxiv style},
+% pdfsubject={q-bio.NC, q-bio.QM},
+% pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
+% pdfkeywords={First keyword, Second keyword, More},
+% }
 
 \begin{document}
 \maketitle
@@ -70,9 +61,9 @@ pdfkeywords={First keyword, Second keyword, More},
 \end{abstract}
 
 
-\keywords{First keyword \and Second keyword \and More}
+\keywords{Временные ряды \and Фазовые траектории \and More}
 
-\section{Introduction}
+\section{Введение}
 \lipsum[2]
 \lipsum[3]
 
@@ -113,7 +104,7 @@ See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of th
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/log_reg_cs_exp.eps}
+	\includegraphics[width=0.5\textwidth]{../figures/log_reg_cs_exp}
 	\caption{Sample figure caption.}
 	\label{fig:fig1}
 \end{figure}
