@@ -7,11 +7,14 @@
 </div><br>
 <div align="center">
   Научный руководитель: к. ф.-м. н. Исаченко Роман Владимирович <br>
-  Научный консультант: студентка Курдюкова Антонина Дмитриевна
+  Научный консультант: Курдюкова Антонина Дмитриевна
 </div>
 
 ## Аннотация
-Purus sit amet luctus venenatis lectus magna fringilla. Condimentum id venenatis a condimentum vitae sapien. Auctor neque vitae tempus quam pellentesque nec nam aliquam. Eget egestas purus viverra accumsan in. Nam aliquam sem et tortor. Donec et odio pellentesque diam volutpat commodo. Odio pellentesque diam volutpat commodo sed egestas. Sit amet dictum sit amet justo. Pellentesque sit amet porttitor eget. Imperdiet sed euismod nisi porta lorem mollis aliquam ut. Quis varius quam quisque id diam vel quam elementum. Ornare lectus sit amet est placerat in. Vulputate dignissim suspendisse in est ante. Elit sed vulputate mi sit amet mauris. Egestas sed tempus urna et pharetra pharetra. Viverra tellus in hac habitasse platea dictumst vestibulum rhoncus.
+Ставится задача предсказания временного ряда со сложной структурой, то есть наличием различных зависимостей и 
+варьирующейся периодичности. Поскольку исходная и целевая переменные связаны между собой, то 
+для обнаружения этой связи предлагается использовать метод сходящихся перекрёстных отображений. Решение 
+данной задачи продемонстрировано на фрагменте видео движущегося человека и показаниях акселерометра.
 
 ## Публикации по теме исследования
 1. 
