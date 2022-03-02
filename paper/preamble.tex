@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english, russian]{babel}
 \usepackage[T2A]{fontenc}
+\usepackage{cmap}
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage{nicefrac}
@@ -13,7 +14,11 @@
 \usepackage{doi}
 \usepackage{multicol}
 
-\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools}
+%% Шрифты
+\usepackage{euscript} % Шрифт Евклид
+\usepackage{mathrsfs} % Красивый матшрифт
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools,dsfont}
 \usepackage{icomma}
 
 \newcommand{\bz}{\mathbf{z}}
@@ -25,6 +30,7 @@
 \newcommand{\bu}{\mathbf{u}}
 \newcommand{\bX}{\mathbf{X}}
 \newcommand{\bZ}{\mathbf{Z}}
+\newcommand{\bH}{\mathbf{H}}
 \newcommand{\bA}{\mathbf{A}}
 \newcommand{\bI}{\mathbf{I}}
 \newcommand{\bJ}{\mathbf{J}}
@@ -44,6 +50,9 @@
 \newcommand{\cX}{\mathcal{X}}
 \newcommand{\cY}{\mathcal{Y}}
 \newcommand{\cW}{\mathcal{W}}
+
+\newcommand{\dH}{\mathds{H}}
+\newcommand{\dR}{\mathds{R}}
 % transpose
 \newcommand{\T}{^{\mathsf{T}}}
 
