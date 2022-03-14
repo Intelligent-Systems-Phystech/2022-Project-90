@@ -1,6 +1,5 @@
 numpy==1.18.5
 pandas==1.3.4
 matplotlib==3.4.3
+tqdm==4.63.0
 pyEDM
-pycaret==2.3.6
-pycaret-ts-alpha==3.0.0.dev1646098008
