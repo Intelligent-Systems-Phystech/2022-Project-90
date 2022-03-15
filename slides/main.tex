@@ -1,193 +1,102 @@
-\documentclass[10pt,pdf,hyperref={unicode}]{beamer}
-
-\mode<presentation>
-{
-\usetheme{boxes}
+\documentclass{beamer}
 \beamertemplatenavigationsymbolsempty
 
+\usecolortheme{beaver}
+\setbeamertemplate{blocks}[rounded=true, shadow=true]
 \setbeamertemplate{footline}[page number]
-\setbeamersize{text margin left=0.5em, text margin right=0.5em}
-}
+\setbeamercolor{itemize item}{fg=red}
+\setbeamercolor{enumerate item}{fg=red}
+% \usepackage{jmlda}
 
 \usepackage[utf8]{inputenc}
-\usepackage[english, russian]{babel}
-\usepackage{bm}
-\usepackage{multirow}
-\usepackage{ragged2e}
-\usepackage{indentfirst}
-\usepackage{multicol}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsfonts,amsmath,mathtext}
 \usepackage{subfig}
-\usepackage{amsmath,amssymb}
-\usepackage{enumerate}
-\usepackage{mathtools}
-\usepackage{comment}
+\usepackage{array}
 \usepackage{multicol}
-
-\usepackage[all]{xy}
+\usepackage{hyperref}
+\usepackage{hhline}
 
 \usepackage{tikz}
-\usetikzlibrary{positioning,arrows}
+\usetikzlibrary{matrix}
 
-\tikzstyle{name} = [parameters]
-\definecolor{name}{rgb}{0.5,0.5,0.5}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bY}{\mathbf{Y}}
+\newcommand{\bX}{\mathbf{X}}
 
-\usepackage{caption}
-\captionsetup{skip=0pt,belowskip=0pt}
+\graphicspath{{../figures/}}
 
-\newtheorem{rustheorem}{Теорема}
-\newtheorem{russtatement}{Утверждение}
-\newtheorem{rusdefinition}{Определение}
+\title[\hbox to 56mm{Определение фазы}]{Восстановление траектории \\ движения руки по видео}
+\author[Э.\,А. Владимиров]{Владимиров Эдуард Анатольевич}
+\institute{Московский физико-технический институт}
+\date{\footnotesize
+	\par\smallskip\emph{Курс:} Автоматизация научных исследований\par (практика, В.\,В.~Стрижов)
+	\par\smallskip\emph{Эксперт:} Р.\,В.~Исаченко
+	\par\smallskip\emph{Консультанты:} А.Д.\,Д.~Курдюкова
+	\par\bigskip\small 2022}
 
-% colors
-\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
-\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\def\vec#1{\mathchoice{\mbox{\boldmath$\displaystyle#1$}}
+	{\mbox{\boldmath$\textstyle#1$}} {\mbox{\boldmath$\scriptstyle#1$}} {\mbox{\boldmath$\scriptscriptstyle#1$}}}
 
-\AtBeginEnvironment{figure}{\setcounter{subfigure}{0}}
-
-\captionsetup[subfloat]{labelformat=empty}
-
-%----------------------------------------------------------------------------------------------------------
-
-\title[Пример слайдов по работе]{Пример слайдов по работе \\ курса}
-\author{Эдуард Анатольевич Владимиров}
-
-\institute[]{Московский физико-технический институт}
-% \date[2022]{\small 10\;февраля\;2022\,г.}
-\date{\today}
-
-%---------------------------------------------------------------------------------------------------------
 \begin{document}
+	\begin{frame}
+		\thispagestyle{empty}
+		\maketitle
+	\end{frame}
 
-\begin{frame}
-\titlepage
-\end{frame}
+	\begin{frame}{Обнаружение фазы}
+		
+		\begin{alertblock}{Задача}
+			TODO
+		\end{alertblock}
+		
+		\begin{alertblock}{Проблема}
+			TODO
+		\end{alertblock}
+		
+		\begin{alertblock}{Решение}
+			TODO
+		\end{alertblock}
+	\end{frame}
 
-%----------------------------------------------------------------------------------------------------------
-\section{Слайд об исследованиях}
-\begin{frame}{Слайд об исследованиях}
-\bigskip
-Исследуется проблема \ldots.
-\begin{block}{Цель исследования~---}
-предложить метод \ldots.
-\end{block}
-\begin{block}{Требуется предложить}
-\justifying
-\begin{enumerate}[1)]
-\item метод \ldots,
-\item метод \ldots,
-\item метод \ldots.
-\end{enumerate}
-\end{block}
-\begin{block}{Решение}
-Для \ldots.
-\end{block}
-\end{frame}
+	\begin{frame}[fragile]{Методы понижения размерности и метод Сугихары}
+		\begin{multicols}{2}
+		\begin{tikzpicture}[scale=0.22]
+			\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
+			{
+				\underset{n \times d}{\bX} & \underset{n \times t}{\bY} \\
+				\underset{n \times K}{\mathbf{\Xi}} & \underset{n \times K}{\mathbf{\Omega}} \\};
+			\path[-stealth]
+			(m-2-1) edge node [right] {$\Gamma^T$} (m-1-1)
+			(m-2-2) edge node [left] {$\Delta^T$} (m-1-2)
+			(m-1-1) edge [bend right] node [left] {$P$} (m-2-1)
+			(m-1-2) edge [bend left] node [right] {$Q$} (m-2-2)
+			(m-2-1) edge [<->] node [above] {$cov/corr$} (m-2-2)
+			(m-1-1) edge [->] node [above] {$f$} (m-1-2);
+		\end{tikzpicture}
+		\hspace{2cm}
+		$\Xi = XP, \: X = \Xi \Gamma^T$
+		$\Sigma = YQ, \: Y = \Sigma \Delta^T$
+		\hspace{2cm}
+		\par
+		$\varphi: \bx_{t_0} \mapsto \widehat{\by_{t_0}} = \sum\limits_{i=1}^k w_i \by_{t_i}$
+		\end{multicols}
+	
+		\begin{tikzpicture}{scale=0.67}
+			\matrix[column sep=1cm,row sep=5mm] (m)
+			{ 
+				\node{\includegraphics[width=3.3cm]{3d_source.png}};
+				& \node{\includegraphics[width=3.3cm]{3d_target.png}};\\
+				\node{\includegraphics[width=3cm]{source_ts_example.png}};
+				& \node{\includegraphics[width=3cm]{target_ts_example.png}};\\
+			};
+			\draw[thick, dashed] (m-1-1) edge [->] node [above] {$\varphi$} (m-1-2);
+			\path[-stealth]
+			(m-2-1) edge [<->] node [above] {\tiny X(t) influences Y(t)} (m-2-2)
+			(m-2-1) edge [bend left] (m-1-1)
+			(m-2-2) edge [bend right] (m-1-2);
+		\end{tikzpicture}
+	\end{frame}
 
-%---------------------------------------------------------------------------------------------------------
-\section{Постановка задачи \ldots}
-\begin{frame}{Постановка задачи \ldots}
-Заданы
-\begin{enumerate}[1)]
-    \item признаки \ldots,
-    \item целевая переменная \ldots,
-    \item \ldots.
-\end{enumerate}
-
-\ldots
-
-\bigskip
-
-Требуется выбрать модель \ldots из множества
-\[
-	\mathfrak{G} = \left\{\mathbf{g}| \mathbf{g}:\mathbb{R}^{n} \to \mathbb{Y}^\prime\right\}.
-\]
-Оптимизационная задача \ldots:
-\[
-	\mathbf{g} = \arg\min_{\mathbf{g} \in \mathfrak{G}} \mathcal{L}\bigr(\ldots\bigr),
-\]
-где $\mathcal{L}$~--- функция ошибки.
-
-\bigskip
-\footnotetext[1]{\textit{Lopez-Paz D., Bottou L., Scholkopf B., Vapnik V.} Unifying distillation and privileged information // ICLR, 2016.}
-\footnotetext[2]{\textit{Hinton G., Vinyals O., Dean J.} Distilling the knowledge in a neural network // NIPS, 2015.}
-\end{frame}
-
-%----------------------------------------------------------------------------------------------------------
-\section{Предложенный метод \ldots}
-\begin{frame}{Предложенный метод \ldots}
-~\\[-1mm]
-Заданы
-\begin{enumerate}[1)]
-	\item \ldots,
-	\item \ldots.
-\end{enumerate}
-
-\medskip
-Параметрические семейства:
-\[
-\setlength\abovedisplayskip{0pt}
-\mathfrak{F} = \left\{\mathbf{f}| \mathbf{f} = \text{softmax}\bigr(\mathbf{v}\bigr(\mathbf{x}\bigr)/T\bigr), \quad \mathbf{v}: \mathbb{R}^{n} \to \mathbb{R}^K \right\},
-\]
-\[
-\mathfrak{G} = \left\{\mathbf{g}| \mathbf{g} = \text{softmax}\bigr(\mathbf{z}\bigr(\mathbf{x}\bigr)/T\bigr), \quad \mathbf{z}: \mathbb{R}^n \to \mathbb{R}^K \right\},
-\]
-где~\ldots.
-
-\medskip
-Функция ошибки
-\[
-\setlength\abovedisplayskip{0pt}
-\begin{aligned}
-   \mathcal{L}\bigr(\mathbf{g}\bigr) = &-\sum_{i=1}^{m}\underbrace{{\sum_{k=1}^{K}y^k_i\log\mathbf{g}\bigr(\mathbf{x}_i\bigr)\bigr|_{T=1}}}_{\text{исходная функция потерь}}- \sum_{i=1}^{m}\underbrace{{\sum_{k=1}^{K}\mathbf{f}\bigr(\mathbf{x}_i\bigr)\bigr|_{T=T_0}\log\mathbf{g}\bigr(\mathbf{x}_i\bigr)\bigr|_{T=T_0}}}_{\text{слагаемое дистилляции}},
-\end{aligned}
-\setlength\belowdisplayskip{0pt}
-\]
-где~\ldots.
-
-Оптимальная модель выбирается из класса,
-$\hat{\mathbf{g}} = \arg\min\limits_{\mathbf{g} \in \mathfrak{G}_{\text{cl}}} \mathcal{L}\bigr(\mathbf{g}\bigr).$
-\end{frame}
-
-%----------------------------------------------------------------------------------------------------------
-\section{Анализ предложенного метода \ldots}
-\begin{frame}{Анализ предложенного метода \ldots}
-\justifying
-
-На графике показана зависимость значения параметров$w_i$ в зависимости от параметра~$l_1$-регуляризации~$C$.
-\begin{figure}[h!]
-\includegraphics[width=0.45\textwidth]{../figures/log_reg_cs_exp}
-\includegraphics[width=0.45\textwidth]{../figures/log_reg_cs_exp}
-\end{figure}
-
-С увеличением параметра регуляризации~$C$ число ненулевых параметров~$w_i$ уменьшается.
-
-\end{frame}
-
-%----------------------------------------------------------------------------------------------------------
-\section{Выводы}
-\begin{frame}{Выводы}
-\justifying
-	\begin{enumerate}
-	\justifying
-	    \item Предложен \ldots.
-        \item Доказаны теоремы \ldots, 
-        \begin{itemize}
-            \item[---] \ldots,
-            \item[---] \ldots.
-        \end{itemize}
-        \item Предложен метод \ldots
-        \begin{itemize}
-            \item[---] \ldots,
-            \item[---] \ldots.
-        \end{itemize}
-        \item Предложены методы \ldots
-        \begin{itemize}
-            \item[---] \ldots,
-            \item[---] \ldots.
-        \end{itemize}
-        \item Предложена вероятностная интерпретации \ldots.
-	\end{enumerate}
-\end{frame}
-%----------------------------------------------------------------------------------------------------------
-
-\end{document} 
+\end{document}
