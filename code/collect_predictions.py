@@ -1,5 +1,7 @@
 import pandas as pd
 
+from constants import *
+
 
 def collect_pred_from_diff_methods(subdir, target_col):
     preds = None
