@@ -61,6 +61,8 @@
 	\end{frame}
 
 	\begin{frame}[fragile]{Методы понижения размерности и метод Сугихары}
+		\includegraphics[height=4.5cm]{block_scheme.png}
+				
 		\begin{multicols}{2}
 		\begin{tikzpicture}[scale=0.22]
 			\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
@@ -83,20 +85,20 @@
 		$\varphi: \bx_{t_0} \mapsto \widehat{\by_{t_0}} = \sum\limits_{i=1}^k w_i \by_{t_i}$
 		\end{multicols}
 	
-		\begin{tikzpicture}{scale=0.67}
-			\matrix[column sep=1cm,row sep=5mm] (m)
-			{ 
-				\node{\includegraphics[width=3.3cm]{3d_source.png}};
-				& \node{\includegraphics[width=3.3cm]{3d_target.png}};\\
-				\node{\includegraphics[width=3cm]{source_ts_example.png}};
-				& \node{\includegraphics[width=3cm]{target_ts_example.png}};\\
-			};
-			\draw[thick, dashed] (m-1-1) edge [->] node [above] {$\varphi$} (m-1-2);
-			\path[-stealth]
-			(m-2-1) edge [<->] node [above] {\tiny X(t) influences Y(t)} (m-2-2)
-			(m-2-1) edge [bend left] (m-1-1)
-			(m-2-2) edge [bend right] (m-1-2);
-		\end{tikzpicture}
+		%\begin{tikzpicture}{scale=0.67}
+		%	\matrix[column sep=1cm,row sep=5mm] (m)
+		%	{ 
+		%		\node{\includegraphics[width=3.3cm]{3d_source.png}};
+		%		& \node{\includegraphics[width=3.3cm]{3d_target.png}};\\
+		%		\node{\includegraphics[width=3cm]{source_ts_example.png}};
+		%		& \node{\includegraphics[width=3cm]{target_ts_example.png}};\\
+		%	};
+		%	\draw[thick, dashed] (m-1-1) edge [->] node [above] {$\varphi$} (m-1-2);
+		%	\path[-stealth]
+		%	(m-2-1) edge [<->] node [above] {\tiny X(t) influences Y(t)} (m-2-2)
+		%	(m-2-1) edge [bend left] (m-1-1)
+		%	(m-2-2) edge [bend right] (m-1-2);
+		%\end{tikzpicture}
 	\end{frame}
 
 \end{document}
