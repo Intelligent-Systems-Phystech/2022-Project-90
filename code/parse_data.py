@@ -17,8 +17,8 @@ def parse_devices(filename):
     acc_data = data.loc[data.sensor == 'Accelerometer']
     gyr_data = data.loc[data.sensor == 'Gyroscope']
 
-    acc_data.drop(columns=['sensor'], inplace=True)
-    gyr_data.drop(columns=['sensor'], inplace=True)
+    acc_data = acc_data.drop(columns=['sensor'])
+    gyr_data = gyr_data.drop(columns=['sensor'])
     gyr_data.reset_index(drop=True, inplace=True)
     
     devices_data = pd.concat([acc_data, gyr_data], axis=1, copy=False)
@@ -36,6 +36,8 @@ def parse_video(filename, keypoints_cnt):
 
     video_data = video_data['keypoints'].apply(pd.Series)
     video_data.drop(columns=range(2, KEYPOINTS_CNT*3, 3), inplace=True)
+    video_data.columns = range(video_data.shape[1])
+    video_data.drop(columns=EXTRA_VIDEO_COLS, inplace=True)
     video_data.columns = VIDEO_COLUMNS
     
     return video_data

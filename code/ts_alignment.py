@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import math
 
 from constants import *
 
@@ -13,7 +14,7 @@ def cut_devices_ts(devices_data, video_data):
     cut_devices_data = devices_data.iloc[new_devices_ids]
     
     cut_devices_data.reset_index(drop=True, inplace=True)
-    cut_devices_data['time'] = np.arange(1, video_ts_size+1)
+    cut_devices_data.loc[:, 'time'] = np.arange(1, video_ts_size+1)
     
     return cut_devices_data, video_data
 
