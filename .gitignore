@@ -121,6 +121,8 @@ logs/
 *.csv
 !.dvc
 
+paper/tmp*
+
 # PdfLatex compilation files
 *.aux
 *.bbl
