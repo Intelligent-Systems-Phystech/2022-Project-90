@@ -118,7 +118,6 @@ logs/
 */.*
 .*
 */mnist
-*.csv
 !.dvc
 
 paper/tmp*
@@ -133,5 +132,6 @@ paper/tmp*
 *.out
 *.snm
 *.toc
+*.vrb
 
 *.sh
