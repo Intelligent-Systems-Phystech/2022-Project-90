@@ -15,6 +15,9 @@
 \usepackage{multicol}
 \usepackage{multirow}
 
+% Algorithms
+\usepackage{algpseudocode}
+\usepackage{algorithm}
 
 %% Шрифты
 \usepackage{euscript} % Шрифт Евклид
@@ -28,8 +31,13 @@
 \newcommand{\bz}{\mathbf{z}}
 \newcommand{\bx}{\mathbf{x}}
 \newcommand{\by}{\mathbf{y}}
+\newcommand{\bv}{\mathbf{v}}
 \newcommand{\bw}{\mathbf{w}}
+\newcommand{\ba}{\mathbf{a}}
 \newcommand{\bb}{\mathbf{b}}
+\newcommand{\bp}{\mathbf{p}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\bt}{\mathbf{t}}
 \newcommand{\bu}{\mathbf{u}}
 \newcommand{\bT}{\mathbf{T}}
 \newcommand{\bX}{\mathbf{X}}
@@ -40,9 +48,15 @@
 \newcommand{\bU}{\mathbf{U}}
 \newcommand{\bQ}{\mathbf{Q}}
 \newcommand{\bP}{\mathbf{P}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bC}{\mathbf{C}}
 \newcommand{\bE}{\mathbf{E}}
 \newcommand{\bF}{\mathbf{F}}
+\newcommand{\bomega}{\boldsymbol{\omega}}
 \newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bgamma}{\boldsymbol{\gamma}}
+\newcommand{\bdelta}{\boldsymbol{\delta}}
 \newcommand{\bPsi}{\boldsymbol{\Psi}}
 \newcommand{\bpsi}{\boldsymbol{\psi}}
 \newcommand{\bxi}{\boldsymbol{\xi}}
@@ -89,5 +103,13 @@
 
 \graphicspath{{../figures/}}
 
-% \usepackage{csquotes} % Еще инструменты для ссылок
-\usepackage{enumitem} % Для модификаций перечневых окружений (itemize, list, ...)
+\usepackage{enumitem} % Для модификаций перечневых окружений
+
+\theoremstyle{definition} % "Определение"
+\newtheorem{definition}{Опр.}[section]
+
+\usepackage{etoolbox}
+
+\makeatletter
+\expandafter\patchcmd\csname\string\algorithmic\endcsname{\itemsep\z@}{\itemsep=1.5mm}{}{}
+\makeatother
