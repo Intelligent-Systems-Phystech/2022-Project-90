@@ -30,9 +30,9 @@
 \author[Э.\,А. Владимиров]{Владимиров Эдуард Анатольевич}
 \institute{Московский физико-технический институт}
 \date{\footnotesize
-	\par\smallskip\emph{Курс:} Автоматизация научных исследований\par (практика, В.\,В.~Стрижов)
+	\par\smallskip\emph{Курс:} Моя первая научная статья
 	\par\smallskip\emph{Эксперт:} Р.\,В.~Исаченко
-	\par\smallskip\emph{Консультанты:} А.Д.\,Д.~Курдюкова
+	\par\smallskip\emph{Консультанты:} А.\,Д.~Курдюкова
 	\par\bigskip\small 2022}
 
 \def\vec#1{\mathchoice{\mbox{\boldmath$\displaystyle#1$}}
@@ -67,22 +67,26 @@
 			\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
 			{
 				\underset{n \times d}{\bX} & \underset{n \times t}{\bY} \\
-				\underset{n \times K}{\mathbf{\Xi}} & \underset{n \times K}{\mathbf{\Omega}} \\};
+				\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\};
 			\path[-stealth]
-			(m-2-1) edge node [right] {$\Gamma^T$} (m-1-1)
-			(m-2-2) edge node [left] {$\Delta^T$} (m-1-2)
-			(m-1-1) edge [bend right] node [left] {$P$} (m-2-1)
-			(m-1-2) edge [bend left] node [right] {$Q$} (m-2-2)
+			(m-2-1) edge node [right] {$P^T$} (m-1-1)
+			(m-2-2) edge node [left] {$Q^T$} (m-1-2)
+			(m-1-1) edge [bend right] node [left] {$A$} (m-2-1)
+			(m-1-2) edge [bend left] node [right] {$B$} (m-2-2)
 			(m-2-1) edge [<->] node [above] {$cov/corr$} (m-2-2)
 			(m-1-1) edge [->] node [above] {$f$} (m-1-2);
 		\end{tikzpicture}
 		\hspace{2cm}
-		$\Xi = XP, \: X = \Xi \Gamma^T$
-		$\Omega = YQ, \: Y = \Omega \Delta^T$
+		$T = XA, \: X = T P^T$
+		$U = YB, \: Y = U Q^T$
 		\hspace{2cm}
 		\par
 		$\varphi: \bx_{t_0} \mapsto \widehat{\by_{t_0}} = \sum\limits_{i=1}^k w_i \by_{t_i}$
 		\end{multicols}
+	\end{frame}
+
+	\begin{frame}{}
+		content...
 	\end{frame}
 
 \end{document}

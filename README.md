@@ -26,3 +26,8 @@
 
 ## Программные модули разработанные в рамках исследования
 1. 
+
+## Установка окружение
+1. `conda create -n paper_env python`
+2. `conda activate paper_env`
+3. `pip install -r ./code/requirements.txt`
