@@ -9,7 +9,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
-\usepackage{amssymb,amsfonts,amsmath,mathtext}
+\usepackage{amssymb,amsfonts,amsmath,mathtext, dsfont}
 \usepackage{subfig}
 \usepackage{array}
 \usepackage{multicol}
@@ -21,8 +21,13 @@
 
 \newcommand{\bx}{\mathbf{x}}
 \newcommand{\by}{\mathbf{y}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bw}{\mathbf{w}}
 \newcommand{\bY}{\mathbf{Y}}
 \newcommand{\bX}{\mathbf{X}}
+\newcommand{\dH}{\mathds{H}}
+
+\newcommand{\T}{^{\mathsf{T}}}
 
 \graphicspath{{../figures/}}
 
@@ -44,18 +49,18 @@
 		\maketitle
 	\end{frame}
 
-	\begin{frame}{Обнаружение фазы}
+	\begin{frame}{Цель исследования}
 		
 		\begin{alertblock}{Задача}
-			TODO
+			Обобщение методов канонического корреляционного анализа с помощью метода Сугихары.
 		\end{alertblock}
 		
 		\begin{alertblock}{Проблема}
-			TODO
+			Получение траекторного пространства по временному ряду и выбор метрики для CCM
 		\end{alertblock}
 		
 		\begin{alertblock}{Решение}
-			TODO
+			Построение матрицы сдвигов по временному ряду и обучение представления фазового пространства.
 		\end{alertblock}
 	\end{frame}
 
@@ -85,8 +90,82 @@
 		\end{multicols}
 	\end{frame}
 
-	\begin{frame}{}
-		content...
+	\begin{frame}{Статьи по теме}
+		\begin{enumerate}
+			\item Edward De Brouwer, Adam Arany, Jaak Simm, and Yves Moreau. Latent convergent
+			cross mapping. In International Conference on Learning Representations, 2020
+			\item Ricky TQ Chen, Yulia Rubanova, Jesse Bettencourt, and David K Duvenaud. Neural
+			ordinary differential equations. Advances in neural information processing systems, 31,
+			2018
+			\item Farukh Yur’evich Yaushev, Roman Vladimirovich Isachenko, and Vadim Strijov.
+			Concordant models for latent space projections in forecasting. Sistemy i Sredstva
+			Informatiki [Systems and Means of Informatics], 31(1):4–16, 2021.
+		\end{enumerate}
+	\end{frame}
+
+	\begin{frame}{Метод Сугихары}
+		\begin{itemize}
+			\item[\textbullet] Траекторная матрица
+			\[ \textbf{H}_{\bx} = \begin{bmatrix}
+				x_1 & x_2 & \ldots & x_{n-N+1} \\
+				x_2 & x_3 & \ldots & x_{n-N+2} \\
+				\vdots & \vdots & \ddots & \vdots \\
+				x_{N} & x_{N+1} & \ldots & x_n
+			\end{bmatrix}\]
+		
+			\item[\textbullet] Определение отображения $\varphi$ между траекторными пространствами
+			\[ \varphi: \bx_0 \mapsto \widehat{\bz_0} = \sum\limits_{i=1}^k w_i \bz_{t_i}, \quad 
+			w_i = \dfrac{u_i}{\sum\limits_{j=1}^k u_j}, \quad
+			u_i = \exp(-||\bx_0 - \bx_{t_i}||). \]
+			
+			\item[\textbullet] Связанные временные ряды
+			\[ \rho_{\dH_{\bz}}(\phi(\bx_i), \phi(\bx_j)) \leq C \rho_{\dH_{\bx}}(\bx_i, \bx_j) \qquad \bx_i, \bx_j \in \dH_{\bx} \]
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Предсказательная модель SMap}
+		\begin{itemize}
+			\item[\textbullet] Пусть задана обучающая выборка
+			\[ \mathfrak{D} = \{ (\bx_i, y_i) \: | \: i = 1, \ldots, d \} = (\bX, \by).\]
+			
+			\item[\textbullet] В одномерном случае:
+			\[ \bx_i = [x_i, x_{i+1}, \ldots, x_{i+N-1}]\T, \quad y_i = x_{i+N}. \]
+			
+			\item[\textbullet] Каждому $\bx_i \in X \backslash \{ x_{t_0}\}$ сопоставим: \[ \bw_i = \exp \left(-\dfrac{\theta \cdot ||\bx_i - \bx_{t_0}||}{\dfrac{1}{d-1} \sum\limits_{j=1, j \neq t_0}^d ||\bx_j - \bx_{t_0}||} \right). \]
+			
+			\item[\textbullet]
+			Для прогнозирования используется авторегрессионная модель порядка $t_0-1$:
+			\[ X_{t_0} = \mu + \psi_1 X_{t_0-1} + \ldots + \psi_{t_0-1} X_1 + u_{t_0}, \quad u_t \sim \mathcal{N}(0, \sigma^2), \quad \psi_p \neq 0.\]
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}{Вычислительный эксперимент}
+		\begin{alertblock}{Цель}
+			Сравнение различных стратегий снижения размерности целевого пространства.
+		\end{alertblock}
+		
+		
+		\begin{multicols}{2}
+		\begin{figure}
+			\includegraphics[width=0.5\textwidth]{cyclic_devices_data.png}
+			\caption{Данные приборов}
+		\end{figure}
+	
+		\begin{figure}[bhtp]
+			\includegraphics[width=0.5\textwidth]{cyclic_video_data.png}
+			\caption{Данные видео-кейпоинтов}
+		\end{figure}
+		\end{multicols}
+		
+	\end{frame}
+
+	\begin{frame}{Результаты}
+		
+	\end{frame}
+
+	\begin{frame}{Заключение}
+	
+	
 	\end{frame}
 
 \end{document}

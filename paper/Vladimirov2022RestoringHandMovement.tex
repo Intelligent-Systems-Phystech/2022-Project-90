@@ -55,7 +55,7 @@
 Наряду с PLS используется метод канонического анализа корреляции (canonical correlation analysis, CCA) \citep{hardoon2004canonical}. 
 Он похож на PLS за исключением того, что первый метод максимизирует ковариацию между проекциями, а последний ~--- корреляцию. 
 Недостатком этих моделей является их низкая точность при оценивании нелинейных зависимостей между данными.
-Разработаны нелинейные модели PLS \citep{qin1992nonlinear, hiden1998non} и CCA \citep{lai2000kernel, andrew2013deep}.
+Разработаны нелинейные модели PLS \citep{qin1992nonlinear} и CCA \citep{andrew2013deep}.
 В данной статье используется модель NNPLS \citep{bulut2014new}, которая преобразует исходные данные с помощью нейронной сети. 
 
 В теоретической части работы показано, что методы снижения размерности CCA и PLS являются частными случаями CCM. 
@@ -298,7 +298,7 @@ $$ \underset{\psi_1, \ldots, \psi_{t_0-1}}{\text{min}} E(\widehat{X_{t_0}} - y_0
 \end{table}
 
 \section{Заключение}
-TODO
+TODO \citep{de2020latent, chen2018neuralode, yaushev2021concordant}
 
 \bibliographystyle{unsrtnat}
 \bibliography{Vladimirov2022RestoringHandMovement.bib}
