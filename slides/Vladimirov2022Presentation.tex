@@ -10,9 +10,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
 \usepackage{amssymb,amsfonts,amsmath,mathtext, dsfont}
+\usepackage{makecell} % diaghead in a table
 \usepackage{subfig}
+\usepackage{tabularx}
 \usepackage{array}
-\usepackage{multicol}
+\usepackage{multicol, multirow}
 \usepackage{hyperref}
 \usepackage{hhline}
 
@@ -120,6 +122,9 @@
 			
 			\item[\textbullet] Связанные временные ряды
 			\[ \rho_{\dH_{\bz}}(\phi(\bx_i), \phi(\bx_j)) \leq C \rho_{\dH_{\bx}}(\bx_i, \bx_j) \qquad \bx_i, \bx_j \in \dH_{\bx} \]
+			
+			\item[\textbullet] Метрика связанности временных рядов
+			\[ Score_{X \rightarrow Z} = CCM_{full}(X, Z) - CCM_0(X, Z) \]
 		\end{itemize}
 	\end{frame}
 
@@ -133,8 +138,7 @@
 			
 			\item[\textbullet] Каждому $\bx_i \in X \backslash \{ x_{t_0}\}$ сопоставим: \[ \bw_i = \exp \left(-\dfrac{\theta \cdot ||\bx_i - \bx_{t_0}||}{\dfrac{1}{d-1} \sum\limits_{j=1, j \neq t_0}^d ||\bx_j - \bx_{t_0}||} \right). \]
 			
-			\item[\textbullet]
-			Для прогнозирования используется авторегрессионная модель порядка $t_0-1$:
+			\item[\textbullet] Для прогнозирования используется авторегрессионная модель порядка $t_0-1$:
 			\[ X_{t_0} = \mu + \psi_1 X_{t_0-1} + \ldots + \psi_{t_0-1} X_1 + u_{t_0}, \quad u_t \sim \mathcal{N}(0, \sigma^2), \quad \psi_p \neq 0.\]
 		\end{itemize}
 	\end{frame}
@@ -160,12 +164,59 @@
 	\end{frame}
 
 	\begin{frame}{Результаты}
-		
+		\begin{table}[bhtp]
+			\fontsize{4pt}{8pt}
+			\selectfont
+			\centering
+			\caption{Сравнение ошибки предсказательной модели в траекторном пространстве и в его подпространстве}
+			\label{tbl:space_and_subspace}
+			\begin{tabularx}{\textwidth}{c|XXXXXX}
+				\hline
+				& acc\_z & acc\_y & acc\_x & gyr\_z & gyr\_y & gyr\_x \\
+				\hline
+				space & 1.053 $\pm$ 2.223 & 0.401 $\pm$ 0.833 & 0.483 $\pm$ 0.825 & 0.084 $\pm$ 0.537 & 0.090 $\pm$ 0.094 & 0.063 $\pm$ 0.295 \\
+				subspace & 0.315 $\pm$ 0.461 & 0.043 $\pm$ 0.051 & 0.150 $\pm$ 0.177 & 0.001 $\pm$ 0.001	& 0.015 $\pm$ 0.031 & 0.001 $\pm$ 0.003 \\
+				\hline
+			\end{tabularx}
+		\end{table}
+	
+		\begin{table}[bhtp]
+			\tiny
+			\centering
+			\caption{Сравнение различных методов снижения размерности}
+			\label{tbl:methods}
+			\begin{tabular}{l|c|llll}
+				\hline
+				\multicolumn{2}{l}{\diaghead{\hskip4cm}{Целевой признак}{Метод}} \vline & CCM & PLS & CCA & Naive \\
+				\hline
+				\multirow{6}{*}{\rotatebox[origin=c]{90}{cyclic}} & acc\_z & 0.163 & \textbf{0.040} & 0.116 & 0.141 \\
+				& acc\_y & 0.009 & \textbf{0.007} & 0.011 & 0.008 \\
+				& acc\_x & \textbf{0.044} & 0.045 & 0.089 & 0.049 \\
+				& gyr\_z & \textbf{0.000} & 0.001 & 0.001 & 0.001 \\
+				& gyr\_y & \textbf{0.002} & 0.004 & 0.005 & 0.003 \\
+				& gyr\_x & 0.009 & 0.004 & 0.004 & \textbf{0.003} \\
+				\hline
+				\multirow{6}{*}{\rotatebox[origin=c]{90}{chaotic}} & acc\_z & \textbf{0.315} & 0.416 & 0.416 & 0.331 \\
+				& acc\_y & \textbf{0.043} & 0.045 & 0.429 & 0.055 \\
+				& acc\_x & 0.150 & 0.177 & 0.221 & \textbf{0.143} \\
+				& gyr\_z & \textbf{0.001} & 0.002 & 0.003 & 0.003 \\
+				& gyr\_y & \textbf{0.015} & 0.022 & 0.061 & 0.026 \\
+				& gyr\_x & \textbf{0.001} & 0.013 & 0.015 & 0.008 \\
+				\hline   
+			\end{tabular}
+		\end{table}
 	\end{frame}
 
 	\begin{frame}{Заключение}
-	
-	
+		\begin{itemize}
+			\item[\textbullet] Предложен метод обобщения PLS и CCA с помощью метода Сугихары
+			
+			\item[\textbullet] Проведён вычислительный эксперимент на данных устройств и видеоряда
+			
+			\item[\textbullet] Получено, что использование данных из видео повышает качество прогнозирования
+			
+			\item[\textbullet] Показано, что прогностическая модель менее устойчива в случае, когда та применяется в траекторном пространстве
+		\end{itemize}
 	\end{frame}
 
 \end{document}
