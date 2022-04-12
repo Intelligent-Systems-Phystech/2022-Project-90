@@ -1,0 +1,66 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english, russian]{babel}
+% \usepackage{cmap}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{lipsum}
+
+%% Шрифты
+\usepackage{euscript} % Шрифт Евклид
+\usepackage{mathrsfs} % Красивый матшрифт
+\usepackage{extsizes} % Возможность сделать 14-й шрифт
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools,dsfont}
+\usepackage{icomma}
+
+\usepackage{hyperref}
+\usepackage[usenames,dvipsnames,svgnames,table,rgb]{xcolor}
+
+\hypersetup{
+	unicode=true,
+	pdftitle={A template for the arxiv style},
+	pdfsubject={q-bio.NC, q-bio.QM},
+	pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
+	pdfkeywords={First keyword, Second keyword, More},
+	colorlinks=true,
+	linkcolor=black,        % внутренние ссылки
+	citecolor=blue,         % на библиографию
+	filecolor=magenta,      % на файлы
+	urlcolor=blue           % на URL
+}
+
+\begin{document}
+	\begin{center}
+		Рецензия на работу
+		
+		Антидистилляция: передача знаний от простой модели к сложной
+		
+		Петрушина Ксения
+	\end{center}
+В работе рассматривается техника антидистилляции, которая позволяет увеличить диверсификацию обучаемой модели. 
+Для достижения этой цели используются различные регуляризационные функции потерь. 
+Новизна работы заключается в использовании различных техник инициализации весов модели-ученика. 
+
+\begin{enumerate}
+	\item Во введении было бы здорово ввести мотивацию для введения антидистилляции. Например, как \href{https://arxiv.org/pdf/2010.09923.pdf}{здесь}
+	\item Стоит дать определение для функции $\varphi$ из постановки задачи
+	\item Необходимо указать в вычислительном эксперименте, какой оптимизатор используется при обучении моделей.
+	\item Не совсем понятно, зачем использовать инициализация нулями, ведь таким образом слой нейросети вырождается в один нейрон. \href{https://medium.com/@safrin1128/weight-initialization-in-neural-network-inspired-by-andrew-ng-e0066dc4a566#:~:text=Zero%20initialization%3A&text=If%20all%20the%20weights%20are,will%20produce%20a%20poor%20result.}{ссылка}
+	\item Стоит добавить ещё несколько способов инициализации весов (например, через нормальное распределение), а также несколько метрик качеств для будущей таблицы.
+	\item В теоретической части фигурирует некая функция $\psi$, определение которой мне найти не удалось.
+\end{enumerate}
+
+Текст статьи с пометками на перечисленные выше и другие замечания направлен автору.  
+
+\textbf{Итог}
+
+Работа хорошая и рекомендуется к публикации. 
+Качественно описаны постановка задачи и детали эксперимента, по ходу чтения статьи прослеживается основной посыл работы. 
+Но стоит доработать некоторые недочеты по тексту статьи.
+
+Рецензент:
+
+Владимиров Э.А.
+\end{document}
