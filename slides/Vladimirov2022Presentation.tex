@@ -31,6 +31,8 @@
 
 \newcommand{\T}{^{\mathsf{T}}}
 
+\addto\captionsrussian{\renewcommand{\figurename}{}}
+
 \graphicspath{{../figures/}}
 
 \title[\hbox to 56mm{Определение фазы}]{Восстановление траектории \\ движения руки по видео}
@@ -51,30 +53,30 @@
 		\maketitle
 	\end{frame}
 
-	\begin{frame}{Цель исследования}
+	\begin{frame}{Восстановление траектории}
 		
 		\begin{alertblock}{Задача}
-			Обобщение методов канонического корреляционного анализа с помощью метода Сугихары.
+			Объединение методов канонического корреляционного анализа и метода Сугихары.
 		\end{alertblock}
 		
 		\begin{alertblock}{Проблема}
-			Получение траекторного пространства по временному ряду и выбор метрики для CCM
+			Построение скрытого пространства по временному ряду и выбор функции согласования латентных проекций
 		\end{alertblock}
 		
 		\begin{alertblock}{Решение}
-			Построение матрицы сдвигов по временному ряду и обучение представления фазового пространства.
+			Обучение автоэнкодеров и использование меры наличия причинно-следственной связи в функции согласования.
 		\end{alertblock}
 	\end{frame}
 
 	\begin{frame}[fragile]{Методы понижения размерности и метод Сугихары}
-		\includegraphics[height=4.5cm]{block_scheme_2.png}
+		\includegraphics[height=5cm]{block_scheme_3.pdf}
 				
 		\begin{multicols}{2}
 		\begin{tikzpicture}[scale=0.22]
 			\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
 			{
-				\underset{n \times d}{\bX} & \underset{n \times t}{\bY} \\
-				\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\};
+				\underset{n \times m}{\bX} & \underset{n \times k}{\bY} \\
+				\underset{n \times l}{\mathbf{T}} & \underset{n \times l}{\mathbf{U}} \\};
 			\path[-stealth]
 			(m-2-1) edge node [right] {$P^T$} (m-1-1)
 			(m-2-2) edge node [left] {$Q^T$} (m-1-2)
@@ -88,7 +90,7 @@
 		$U = YB, \: Y = U Q^T$
 		\hspace{2cm}
 		\par
-		$\varphi: \bx_{t_0} \mapsto \widehat{\by_{t_0}} = \sum\limits_{i=1}^k w_i \by_{t_i}$
+		$\varphi: \bx_{t_0} \mapsto \widehat{\by_{t_0}} = \sum\limits_{i} w_i \by_{t_i}$
 		\end{multicols}
 	\end{frame}
 
@@ -96,51 +98,75 @@
 		\begin{enumerate}
 			\item Edward De Brouwer, Adam Arany, Jaak Simm, and Yves Moreau. Latent convergent
 			cross mapping. In International Conference on Learning Representations, 2020
-			\item Ricky TQ Chen, Yulia Rubanova, Jesse Bettencourt, and David K Duvenaud. Neural
-			ordinary differential equations. Advances in neural information processing systems, 31,
-			2018
+			\item George Sugihara and Robert M May. Nonlinear forecasting as a way of distinguishing
+			chaos from measurement error in time series. Nature, 344(6268):734–741, 1990.
 			\item Farukh Yur’evich Yaushev, Roman Vladimirovich Isachenko, and Vadim Strijov.
 			Concordant models for latent space projections in forecasting. Sistemy i Sredstva
 			Informatiki [Systems and Means of Informatics], 31(1):4–16, 2021.
 		\end{enumerate}
 	\end{frame}
 
-	\begin{frame}{Метод Сугихары}
+	\begin{frame}{Метод Сугихары (CCM)}
 		\begin{itemize}
-			\item[\textbullet] Траекторная матрица
+			\item[] Траекторная матрица
 			\[ \textbf{H}_{\bx} = \begin{bmatrix}
 				x_1 & x_2 & \ldots & x_{n-N+1} \\
 				x_2 & x_3 & \ldots & x_{n-N+2} \\
 				\vdots & \vdots & \ddots & \vdots \\
 				x_{N} & x_{N+1} & \ldots & x_n
-			\end{bmatrix}\]
+			\end{bmatrix} = [\bx^1, \ldots, \bx^{n-N+1}] \]
 		
-			\item[\textbullet] Определение отображения $\varphi$ между траекторными пространствами
-			\[ \varphi: \bx_0 \mapsto \widehat{\bz_0} = \sum\limits_{i=1}^k w_i \bz_{t_i}, \quad 
+			\item[] Определение отображения $\varphi$ между траекторными пространствами
+			\[ \varphi: \bx^0 \mapsto \widehat{\bz^0} = \sum\limits_{i=1}^k w_i \bz^{t_i}, \quad 
 			w_i = \dfrac{u_i}{\sum\limits_{j=1}^k u_j}, \quad
-			u_i = \exp(-||\bx_0 - \bx_{t_i}||). \]
+			u_i = \exp(-||\bx^0 - \bx^{t_i}||). \]
 			
-			\item[\textbullet] Связанные временные ряды
-			\[ \rho_{\dH_{\bz}}(\phi(\bx_i), \phi(\bx_j)) \leq C \rho_{\dH_{\bx}}(\bx_i, \bx_j) \qquad \bx_i, \bx_j \in \dH_{\bx} \]
+			% \item[] Связанные временные ряды
+			% \[ \rho_{\dH_{\bz}}(\varphi(\bx_i), \varphi(\bx_j)) \leq C \rho_{\dH_{\bx}}(\bx_i, \bx_j) \qquad \bx_i, \bx_j \in \dH_{\bx} \]
 			
-			\item[\textbullet] Метрика связанности временных рядов
+			\item[] Метрика связанности временных рядов
 			\[ Score_{X \rightarrow Z} = CCM_{full}(X, Z) - CCM_0(X, Z) \]
+			\[ CCM_{full}(X, Z) = \text{Corr}(\varphi(\bx^{n-N+1}), \: \bx^{n-N+1})\]
+			\[ CCM_0(X, Z) = \text{Corr}(\varphi(\bx^0), \: \bx^0)\]
 		\end{itemize}
 	\end{frame}
 
-	\begin{frame}{Предсказательная модель SMap}
-		\begin{itemize}
-			\item[\textbullet] Пусть задана обучающая выборка
-			\[ \mathfrak{D} = \{ (\bx_i, y_i) \: | \: i = 1, \ldots, d \} = (\bX, \by).\]
-			
-			\item[\textbullet] В одномерном случае:
-			\[ \bx_i = [x_i, x_{i+1}, \ldots, x_{i+N-1}]\T, \quad y_i = x_{i+N}. \]
-			
-			\item[\textbullet] Каждому $\bx_i \in X \backslash \{ x_{t_0}\}$ сопоставим: \[ \bw_i = \exp \left(-\dfrac{\theta \cdot ||\bx_i - \bx_{t_0}||}{\dfrac{1}{d-1} \sum\limits_{j=1, j \neq t_0}^d ||\bx_j - \bx_{t_0}||} \right). \]
-			
-			\item[\textbullet] Для прогнозирования используется авторегрессионная модель порядка $t_0-1$:
-			\[ X_{t_0} = \mu + \psi_1 X_{t_0-1} + \ldots + \psi_{t_0-1} X_1 + u_{t_0}, \quad u_t \sim \mathcal{N}(0, \sigma^2), \quad \psi_p \neq 0.\]
-		\end{itemize}
+	\begin{frame}[fragile]{Deep PLS}
+		\begin{tikzpicture}[scale=2]
+			\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
+			{
+				\underset{n \times m}{\bX} & \underset{n \times k}{\bY} \\
+				\underset{n \times l}{\mathbf{T}} & \underset{n \times l}{\mathbf{U}} \\};
+			\path[-stealth]
+			(m-2-1) edge node [right] {$decoder_x$} (m-1-1)
+			(m-2-2) edge node [left] {$decoder_y$} (m-1-2)
+			(m-1-1) edge [bend right] node [left] {$encoder_x$} (m-2-1)
+			(m-1-2) edge [bend left] node [right] {$encoder_y$} (m-2-2)
+			(m-2-1) edge [<->] node [above] {$\mathcal{L}_{cons}$} (m-2-2);
+		\end{tikzpicture}
+	
+		Consistency: $\mathcal{L}_{cons}(T, U) = \exp(-tr(U_{centered}\T T_{centered}))$
+		Recovering: $\mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2$
+	\end{frame}
+
+	\begin{frame}[fragile]{PLS-CCM}
+		\begin{tikzpicture}[scale=2]
+			\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
+			{
+				\underset{n \times m}{\bX} & \underset{n \times k}{\bY} \\
+				\underset{n \times l}{\mathbf{T}} & \underset{n \times l}{\mathbf{U}} \\};
+			\path[-stealth]
+			(m-2-1) edge node [right] {$decoder_x$} (m-1-1)
+			(m-2-2) edge node [left] {$decoder_y$} (m-1-2)
+			(m-1-1) edge [bend right] node [left] {$encoder_x$} (m-2-1)
+			(m-1-2) edge [bend left] node [right] {$encoder_y$} (m-2-2)
+			(m-2-1) edge [<->] node [above] {$\mathcal{L}_{fc} + CCM_{TU}$} (m-2-2)
+			(m-1-1) edge [<->] node [above] {$CCM_{XY}$} (m-1-2);
+		\end{tikzpicture}
+		
+		Feature consistency: $\mathcal{L}_{fc}(T, U) = \exp(-tr(U_{centered}\T T_{centered}))$
+		Object consistency: $\mathcal{L}_{oc}(X, Y, T, U) = (CCM_{XY} - CCM_{TU})^2$
+		Recovering: $\mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2$
 	\end{frame}
 
 	\begin{frame}{Вычислительный эксперимент}
@@ -163,7 +189,7 @@
 		
 	\end{frame}
 
-	\begin{frame}{Результаты}
+	\begin{frame}{Анализ ошибки}
 		\begin{table}[bhtp]
 			\fontsize{4pt}{8pt}
 			\selectfont
@@ -208,15 +234,15 @@
 	\end{frame}
 
 	\begin{frame}{Заключение}
-		\begin{itemize}
-			\item[\textbullet] Предложен метод обобщения PLS и CCA с помощью метода Сугихары
+		\begin{enumerate}
+			\item Предложен метод согласованного снижения размерности, объединяющий в себе методы PLS и Сугихары
 			
-			\item[\textbullet] Проведён вычислительный эксперимент на данных устройств и видеоряда
+			\item Проведён вычислительный эксперимент на данных устройств и видеоряда
 			
-			\item[\textbullet] Получено, что использование данных из видео повышает качество прогнозирования
+			\item Получено, что использование данных из видео повышает качество прогнозирования
 			
-			\item[\textbullet] Показано, что прогностическая модель менее устойчива в случае, когда та применяется в траекторном пространстве
-		\end{itemize}
+			\item Показано, что прогностическая модель менее устойчива в случае, когда та применяется в траекторном пространстве
+		\end{enumerate}
 	\end{frame}
 
 \end{document}
