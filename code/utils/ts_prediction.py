@@ -2,7 +2,7 @@ import pyEDM as edm
 import pandas as pd
 import numpy as np
 
-from constants import *
+from utils.constants import *
 
 
 def naive_predict_ts(data, libsize, predsize, Tp, subdir):

@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import math
 
-from constants import *
+from utils.constants import *
 
 
 def cut_devices_ts(devices_data, video_data):

@@ -4,7 +4,7 @@ import pyEDM as edm
 from sklearn.cross_decomposition import PLSCanonical, CCA
 from tqdm import tqdm
 
-from constants import *
+from utils.constants import *
 
 
 def read_corr_mat(filename):

@@ -2,7 +2,7 @@ import numpy as np
 
 
 E = 3
-THETA = 2
+THETA = 4
 
 TARGET_COLUMNS = ['acc_z', 'acc_y', 'acc_x', 'gyr_z', 'gyr_y', 'gyr_x']
 TARGET_SIZE = len(TARGET_COLUMNS)

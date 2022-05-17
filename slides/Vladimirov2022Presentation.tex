@@ -145,7 +145,8 @@
 			(m-2-1) edge [<->] node [above] {$\mathcal{L}_{cons}$} (m-2-2);
 		\end{tikzpicture}
 	
-		Consistency: $\mathcal{L}_{cons}(T, U) = \exp(-tr(U_{centered}\T T_{centered}))$
+		Consistency: $\mathcal{L}_{cons}(T, U) = \exp(-\frac{1}{n} tr(U_{centered}\T T_{centered}))$
+
 		Recovering: $\mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2$
 	\end{frame}
 
@@ -164,8 +165,10 @@
 			(m-1-1) edge [<->] node [above] {$CCM_{XY}$} (m-1-2);
 		\end{tikzpicture}
 		
-		Feature consistency: $\mathcal{L}_{fc}(T, U) = \exp(-tr(U_{centered}\T T_{centered}))$
+		Feature consistency: $\mathcal{L}_{fc}(T, U) = \exp(-\frac{1}{n} tr(U_{centered}\T T_{centered}))$
+		
 		Object consistency: $\mathcal{L}_{oc}(X, Y, T, U) = (CCM_{XY} - CCM_{TU})^2$
+		
 		Recovering: $\mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2$
 	\end{frame}
 
