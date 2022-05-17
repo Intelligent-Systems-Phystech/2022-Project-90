@@ -150,9 +150,6 @@ u_i = \exp(-||\bx_0 - \bx_{t_i}||).$$
 
 Если $L(x, y)$ больше заданного порога $C(n)$, то временной ряд $\by$ зависит от временного ряда $\bx$.
 
-% Предполагается, что размерность траекторного пространства избыточна, что приводит к неустойчивости прогностической моделей ряда $\bx$.
-% Поэтому предлагается рассматривать не саму траекторию $\bx(t)$, а ее проекцию $$\bx_l(t) \in \dR^l, \; l < N$$ в траекторное подпространство 
-
 \subsection{Метод PLS}
 Другой способ решения поставленной ранее проблемы заключается в согласованном снижении размерности
 Метод частичных наименьших квадратов восстанавливает связь между наборами данных $\bX$ и $\bY$. 
@@ -213,42 +210,67 @@ $$ \bW_{\bx} = \bA(\bP \T \bA)^{-1}, \qquad \bW_{\by} = \bB(\bQ \T \bB)^{-1}. $$
 
 \subsection{Методы PLS-Autoencoder и PLS-CCM}
 Основной минус классического метода PLS заключается в низком качестве при работе с данными, которые имеют сложные нелинейные зависимости. 
-По этой причине были разработаны расширения линейного метода PLS, которые преобразуют входные данные с помощью нейронных сетей. 
+По этой причине были разработаны расширения линейного метода PLS, которые преобразуют входные данные с помощью гладких нелинейных функций.
+ 
 Одним из таких расширений является метод PLS-Autoencoder. 
 В качестве параметрической функций, которые переводят исходные данные в латентное пространство и обратно, выступают нейронные сети.
-Эти функции называются энкодером и декодером соответственно.
+В данной работе используются многослойные перцептроны.
 
-
-\begin{multicols}{2}
-	\begin{tikzpicture}[scale=2]
-		\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
-		{
-			\underset{n \times d}{\bX} & \underset{n \times s}{\bY} \\
-			\underset{n \times K}{\mathbf{T}} & \underset{n \times }{\mathbf{U}} \\
-		};
-		\path[-stealth]
-		(m-2-1) edge node [right] {$\phi_{dec}$} (m-1-1)
-		(m-2-2) edge node [left] {$\psi_{dec}$} (m-1-2)
-		(m-1-1) edge [bend right] node [left] {$\phi_{enc}$} (m-2-1)
-		(m-1-2) edge [bend left] node [right] {$\psi_{enc}$} (m-2-2)
-		(m-2-1) edge [<->] node [above] {$\mathcal{L}_{cons}$} (m-2-2);
-	\end{tikzpicture}
-
-	\begin{tikzpicture}[scale=2]
+\begin{figure}[bhtp]
+	\centering
+	\begin{tikzpicture}[scale=1.5, every node/.style={scale=1.5}]
 		\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
 		{
 			\underset{n \times d}{\bX} & \underset{n \times s}{\bY} \\
 			\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\
 		};
 		\path[-stealth]
-		(m-2-1) edge node [right] {$\phi_{dec}$} (m-1-1)
-		(m-2-2) edge node [left] {$\psi_{dec}$} (m-1-2)
-		(m-1-1) edge [bend right] node [left] {$\phi_{enc}$} (m-2-1)
-		(m-1-2) edge [bend left] node [right] {$\psi_{enc}$} (m-2-2)
-		(m-2-1) edge [<->] node [above] {$\mathcal{L}_{fc} + CCM_{TU}$} (m-2-2)
+		(m-2-1) edge node [right] {$\phi_{\text{dec}}$} (m-1-1)
+		(m-2-2) edge node [left] {$\psi_{\text{dec}}$} (m-1-2)
+		(m-1-1) edge [bend right] node [left] {$\phi_{\text{enc}}$} (m-2-1)
+		(m-1-2) edge [bend left] node [right] {$\psi_{\text{enc}}$} (m-2-2)
+		(m-2-1) edge [<->] node [above] {$\mathcal{L}_{\text{cons}}$} (m-2-2);
+	\end{tikzpicture}
+	\caption{PLS-Autoencoder}
+	\label{fig:pls-ae}
+\end{figure}
+
+Функция потерь данной модели имеет вид:
+\begin{gather*}
+	\mathcal{L} = \lambda_1 \cdot \mathcal{L}^X_{\text{recov}}(\bX, \hat{\bX}) + \lambda_2 \cdot \mathcal{L}^Y_{\text{recov}}(\bY, \hat{\bY}) + \lambda_3 \cdot \mathcal{L}_{\text{cons}}(\bT, \bU), 
+	\qquad \lambda_1, \lambda_2, \lambda_3 > 0	\\
+	\mathcal{L}^X_{\text{recov}}(\bX, \hat{\bX}) = || \bX - \hat{\bX}||_2^2 \: , \text{ где } \hat{\bX} = \phi_{\text{dec}}(\phi_{\text{enc}}(\bX)) \\
+	\mathcal{L}^Y_{\text{recov}}(\bY, \hat{\bY}) = || \bY - \hat{\bY}||_2^2 \: , \text{ где } \hat{\bY} = \psi_{\text{dec}}(\psi_{\text{enc}}(\bY)) \\
+	\mathcal{L}_{\text{cons}}(\bT, \bU) = \dfrac{1}{1 + \left( \frac{1}{n} \, tr(\bU_{\text{centered}}\T \bT_{\text{centered}}) \right)^2}
+\end{gather*}
+где $\mathcal{L}_{\text{recov}}$ отвечает за то, насколько точно восстанавливаются исходные данные по их проекциям в латентное пространство, а $\mathcal{L}_{\text{cons}}$ отвечает за связанность низкоразмерных латентных представлений.
+
+Стоит подчеркнуть, что $\mathcal{L}_{\text{cons}}$ максимизирует квадрат суммы ковариаций соответствующих признаков, которые являются столбцами матриц $\bT$ и $\bU$. 
+Таким образом, этот метод не учитывает согласованность объектов в латентном пространстве, то есть строк матриц $\bT$ и $\bU$.
+
+Новый метод PLS-CCM учитывает объектную согласованность с помощью метрических функций из метода CCM. Он является расширением PLS-Autoencoder, только добавляется новая функция потерь:
+$$ \mathcal{L}_\text{oc}(\bX, \bY, \bU, \bT) = \left( CCM_{XY} - CCM_{UT} \right)^2 ,$$
+где $CCM_{XY}$ ~--- величина, характеризующая качество аппроксимации $\by_n$ с помощью $\bx_n$, построенной в траекторном пространстве, состоящем из первых $n-1$ объектов, а $CCM_{UT}$ ~--- та же величина, полученная из матриц $\bU$ и $\bT$.
+
+\begin{figure}[bhtp]
+	\centering
+	\begin{tikzpicture}[scale=1.5, every node/.style={scale=1.5}]
+		\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
+		{
+			\underset{n \times d}{\bX} & \underset{n \times s}{\bY} \\
+			\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\
+		};
+		\path[-stealth]
+		(m-2-1) edge node [right] {$\phi_{\text{dec}}$} (m-1-1)
+		(m-2-2) edge node [left] {$\psi_{\text{dec}}$} (m-1-2)
+		(m-1-1) edge [bend right] node [left] {$\phi_{\text{enc}}$} (m-2-1)
+		(m-1-2) edge [bend left] node [right] {$\psi_{\text{enc}}$} (m-2-2)
+		(m-2-1) edge [<->] node [above] {$\mathcal{L}_{\text{fc}} + CCM_{TU}$} (m-2-2)
 		(m-1-1) edge [<->] node [above] {$CCM_{XY}$} (m-1-2);
 	\end{tikzpicture}
-\end{multicols}
+	\caption{PLS-CCM}
+	\label{fig:pls-ccm}
+\end{figure}
 
 %Feature consistency: $\mathcal{L}_{fc}(T, U) = \exp(-\frac{1}{n} tr(U_{centered}\T T_{centered}))$
 
@@ -259,7 +281,7 @@ $$ \bW_{\bx} = \bA(\bP \T \bA)^{-1}, \qquad \bW_{\by} = \bB(\bQ \T \bB)^{-1}. $$
 % Объяснение симплекс метода: \href{http://opetchey.github.io/RREEBES/Sugihara_and_May_1990_Nature/Simplex_projection_walkthrough.html#:~:text=From%20the%20supplementary%20information%20of,lagged%20coordinate%20state%20space%20reconstruction)}{тык}
 
 \section{Вычислительный эксперимент}
-Целью эксперимента является сравнение различных стратегий снижения размерности целевого пространства. Важной его частью является изучение результатов алгоритма прогнозирования временного ряда, применённого к элементам пространства фазовых траекторий и траекторного подпространства меньшей размерности.
+Целью эксперимента является сравнение различных стратегий снижения размерности целевого пространства. Важной его частью является изучение результатов модели прогнозирования временного ряда, применённого к элементам пространства фазовых траекторий и траекторного подпространства меньшей размерности.
 
 \begin{figure}[bhtp]
 	\includegraphics[width=\textwidth]{cyclic_devices_data.png}
