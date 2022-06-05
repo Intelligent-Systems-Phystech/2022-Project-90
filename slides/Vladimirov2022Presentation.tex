@@ -69,35 +69,31 @@
 	\end{frame}
 
 	\begin{frame}[fragile]{Методы понижения размерности и метод Сугихары}
-		\includegraphics[height=5cm]{block_scheme_3.pdf}
+		\includegraphics[height=5cm]{block_scheme_4.pdf}
 				
 		\begin{multicols}{2}
 		\begin{tikzpicture}[scale=0.22]
 			\matrix (m) [matrix of math nodes,row sep=3em,column sep=4em,minimum width=2em]
 			{
-				\underset{n \times m}{\bX} & \underset{n \times k}{\bY} \\
-				\underset{n \times l}{\mathbf{T}} & \underset{n \times l}{\mathbf{U}} \\};
+				\underset{n \times d}{\bX} & \underset{n \times s}{\bY} \\
+				\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\};
 			\path[-stealth]
 			(m-2-1) edge node [right] {$P^T$} (m-1-1)
 			(m-2-2) edge node [left] {$Q^T$} (m-1-2)
 			(m-1-1) edge [bend right] node [left] {$A$} (m-2-1)
 			(m-1-2) edge [bend left] node [right] {$B$} (m-2-2)
-			(m-2-1) edge [<->] node [above] {$cov/corr$} (m-2-2)
+			(m-2-1) edge [<->] node [above] {$cov$} (m-2-2)
 			(m-1-1) edge [->] node [above] {$f$} (m-1-2);
 		\end{tikzpicture}
 		\hspace{2cm}
-		$T = XA, \: X = T P^T$
-		$U = YB, \: Y = U Q^T$
-		\hspace{2cm}
 		\par
 		$\varphi: \bx_{t_0} \mapsto \widehat{\by_{t_0}} = \sum\limits_{i} w_i \by_{t_i}$
+		$Score_{S_X^i \rightarrow S_Y^j} = \rho(y_{t_0}, \widehat{y_{t_0}})$
 		\end{multicols}
 	\end{frame}
 
 	\begin{frame}{Статьи по теме}
 		\begin{enumerate}
-			\item Edward De Brouwer, Adam Arany, Jaak Simm, and Yves Moreau. Latent convergent
-			cross mapping. In International Conference on Learning Representations, 2020
 			\item George Sugihara and Robert M May. Nonlinear forecasting as a way of distinguishing
 			chaos from measurement error in time series. Nature, 344(6268):734–741, 1990.
 			\item Farukh Yur’evich Yaushev, Roman Vladimirovich Isachenko, and Vadim Strijov.
@@ -117,7 +113,7 @@
 			\end{bmatrix} = [\bx^1, \ldots, \bx^{n-N+1}] \]
 		
 			\item[] Определение отображения $\varphi$ между траекторными пространствами
-			\[ \varphi: \bx^0 \mapsto \widehat{\bz^0} = \sum\limits_{i=1}^k w_i \bz^{t_i}, \quad 
+			\[ \varphi: \bx^0 \mapsto \widehat{\by^0} = \sum\limits_{i=1}^k w_i \by^{t_i}, \quad 
 			w_i = \dfrac{u_i}{\sum\limits_{j=1}^k u_j}, \quad
 			u_i = \exp(-||\bx^0 - \bx^{t_i}||). \]
 			
@@ -125,9 +121,10 @@
 			% \[ \rho_{\dH_{\bz}}(\varphi(\bx_i), \varphi(\bx_j)) \leq C \rho_{\dH_{\bx}}(\bx_i, \bx_j) \qquad \bx_i, \bx_j \in \dH_{\bx} \]
 			
 			\item[] Метрика связанности временных рядов
-			\[ Score_{X \rightarrow Z} = CCM_{full}(X, Z) - CCM_0(X, Z) \]
-			\[ CCM_{full}(X, Z) = \text{Corr}(\varphi(\bx^{n-N+1}), \: \bx^{n-N+1})\]
-			\[ CCM_0(X, Z) = \text{Corr}(\varphi(\bx^0), \: \bx^0)\]
+			\[ Score_{X \rightarrow Y} = \text{Corr}(\varphi(\bx^{n-N+1}), \: \by^{n-N+1}) \]
+			%\[ Score_{X \rightarrow Y} = CCM_{full}(X, Y) - CCM_0(X, Y) \]
+			%\[ CCM_{full}(X, Y) = \text{Corr}(\varphi(\bx^{n-N+1}), \: \by^{n-N+1})\]
+			%\[ CCM_0(X, Y) = \text{Corr}(\varphi(\bx^0), \: \by^0)\]
 		\end{itemize}
 	\end{frame}
 
@@ -135,41 +132,47 @@
 		\begin{tikzpicture}[scale=2]
 			\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
 			{
-				\underset{n \times m}{\bX} & \underset{n \times k}{\bY} \\
-				\underset{n \times l}{\mathbf{T}} & \underset{n \times l}{\mathbf{U}} \\};
+				\underset{n \times d}{\bX} & \underset{n \times s}{\bY} \\
+				\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\};
 			\path[-stealth]
-			(m-2-1) edge node [right] {$decoder_x$} (m-1-1)
-			(m-2-2) edge node [left] {$decoder_y$} (m-1-2)
-			(m-1-1) edge [bend right] node [left] {$encoder_x$} (m-2-1)
-			(m-1-2) edge [bend left] node [right] {$encoder_y$} (m-2-2)
+			(m-2-1) edge node [right] {$\varphi_\text{dec}$} (m-1-1)
+			(m-2-2) edge node [left] {$\psi_\text{dec}$} (m-1-2)
+			(m-1-1) edge [bend right] node [left] {$\varphi_\text{enc}$} (m-2-1)
+			(m-1-2) edge [bend left] node [right] {$\psi_\text{enc}$} (m-2-2)
 			(m-2-1) edge [<->] node [above] {$\mathcal{L}_{cons}$} (m-2-2);
 		\end{tikzpicture}
 	
-		Consistency: $\mathcal{L}_{cons}(T, U) = \exp(-\frac{1}{n} tr(U_{centered}\T T_{centered}))$
-
-		Recovering: $\mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2$
+		\begin{gather*}
+			\text{Consistency: } \mathcal{L}_{\text{cons}}(T, U) = \dfrac{1}{1 + \left( \frac{1}{n} \, tr(U_{\text{centered}}\T T_{\text{centered}}) \right)^2} \\
+			\text{Recovering: } \mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2 \text{, where } \hat{X} = \varphi_\text{dec}(\varphi_\text{enc}(X)) \\
+			\text{Loss function: } \mathcal{L} = \lambda_1 \mathcal{L}_{\text{recov}}(\bX, \hat{\bX}) + \lambda_2 \mathcal{L}_{\text{recov}}(\bY, \hat{\bY}) + \lambda_3 \mathcal{L}_{\text{cons}}(T, U) \\
+		\end{gather*}
 	\end{frame}
 
 	\begin{frame}[fragile]{PLS-CCM}
 		\begin{tikzpicture}[scale=2]
 			\matrix (m) [matrix of math nodes,row sep=6em,column sep=8em,minimum width=4em]
 			{
-				\underset{n \times m}{\bX} & \underset{n \times k}{\bY} \\
-				\underset{n \times l}{\mathbf{T}} & \underset{n \times l}{\mathbf{U}} \\};
+				\underset{n \times d}{\bX} & \underset{n \times s}{\bY} \\
+				\underset{n \times K}{\mathbf{T}} & \underset{n \times K}{\mathbf{U}} \\};
 			\path[-stealth]
-			(m-2-1) edge node [right] {$decoder_x$} (m-1-1)
-			(m-2-2) edge node [left] {$decoder_y$} (m-1-2)
-			(m-1-1) edge [bend right] node [left] {$encoder_x$} (m-2-1)
-			(m-1-2) edge [bend left] node [right] {$encoder_y$} (m-2-2)
+			(m-2-1) edge node [right] {$\varphi_\text{dec}$} (m-1-1)
+			(m-2-2) edge node [left] {$\psi_\text{dec}$} (m-1-2)
+			(m-1-1) edge [bend right] node [left] {$\varphi_\text{enc}$} (m-2-1)
+			(m-1-2) edge [bend left] node [right] {$\psi_\text{enc}$} (m-2-2)
 			(m-2-1) edge [<->] node [above] {$\mathcal{L}_{fc} + CCM_{TU}$} (m-2-2)
 			(m-1-1) edge [<->] node [above] {$CCM_{XY}$} (m-1-2);
 		\end{tikzpicture}
-		
-		Feature consistency: $\mathcal{L}_{fc}(T, U) = \exp(-\frac{1}{n} tr(U_{centered}\T T_{centered}))$
-		
-		Object consistency: $\mathcal{L}_{oc}(X, Y, T, U) = (CCM_{XY} - CCM_{TU})^2$
-		
-		Recovering: $\mathcal{L}_{recov}(X, \hat{X}) = || X - \hat{X} ||_2^2$
+	
+		\begin{gather*}
+			\text{Feature consistency: } \mathcal{L}_{\text{fc}}(T, U) = \mathcal{L}_{\text{cons}}(T, U) \\
+			\text{Object consistency: } \mathcal{L}_{oc}(X, Y, T, U) = (CCM_{XY} - CCM_{TU})^2
+		\end{gather*}
+	
+		\begin{multline*}
+			\text{Loss function: } \mathcal{L} = \lambda_1 \mathcal{L}_{\text{recov}}(\bX, \hat{\bX}) + \lambda_2 \mathcal{L}_{\text{recov}}(\bY, \hat{\bY}) + \\ 
+			+ \lambda_3 \mathcal{L}_{\text{fc}}(T, U) + \lambda_4 \mathcal{L}_{\text{oc}}(X, Y, T, U)
+		\end{multline*}
 	\end{frame}
 
 	\begin{frame}{Вычислительный эксперимент}
@@ -208,29 +211,29 @@
 				\hline
 			\end{tabularx}
 		\end{table}
-	
+
 		\begin{table}[bhtp]
 			\tiny
 			\centering
 			\caption{Сравнение различных методов снижения размерности}
 			\label{tbl:methods}
-			\begin{tabular}{l|c|llll}
+			\begin{tabular}{l|c|lll}
 				\hline
-				\multicolumn{2}{l}{\diaghead{\hskip4cm}{Целевой признак}{Метод}} \vline & CCM & PLS & CCA & Naive \\
+				\multicolumn{2}{l}{\diaghead{\hskip4cm}{Целевой признак}{Метод}} \vline & PLS-AE & PLS-CCM & PLS \\
 				\hline
-				\multirow{6}{*}{\rotatebox[origin=c]{90}{cyclic}} & acc\_z & 0.163 & \textbf{0.040} & 0.116 & 0.141 \\
-				& acc\_y & 0.009 & \textbf{0.007} & 0.011 & 0.008 \\
-				& acc\_x & \textbf{0.044} & 0.045 & 0.089 & 0.049 \\
-				& gyr\_z & \textbf{0.000} & 0.001 & 0.001 & 0.001 \\
-				& gyr\_y & \textbf{0.002} & 0.004 & 0.005 & 0.003 \\
-				& gyr\_x & 0.009 & 0.004 & 0.004 & \textbf{0.003} \\
+				\multirow{6}{*}{\rotatebox[origin=c]{90}{cyclic}} & acc\_z & 4.087 & 5.826 & \textbf{4.013} \\
+				& acc\_y & \textbf{1.069} & 3.947 & 2.725 \\
+				& acc\_x & 4.113 & \textbf{3.257} & 4.358 \\
+				& gyr\_z & \textbf{0.949} & 1.074 & 2.067 \\
+				& gyr\_y & 3.462 & 4.193 & \textbf{1.401} \\
+				& gyr\_x & 1.148 & \textbf{0.511} & 2.671 \\
 				\hline
-				\multirow{6}{*}{\rotatebox[origin=c]{90}{chaotic}} & acc\_z & \textbf{0.315} & 0.416 & 0.416 & 0.331 \\
-				& acc\_y & \textbf{0.043} & 0.045 & 0.429 & 0.055 \\
-				& acc\_x & 0.150 & 0.177 & 0.221 & \textbf{0.143} \\
-				& gyr\_z & \textbf{0.001} & 0.002 & 0.003 & 0.003 \\
-				& gyr\_y & \textbf{0.015} & 0.022 & 0.061 & 0.026 \\
-				& gyr\_x & \textbf{0.001} & 0.013 & 0.015 & 0.008 \\
+				\multirow{6}{*}{\rotatebox[origin=c]{90}{chaotic}} & acc\_z & 35.675 & 32.448 & \textbf{25.588} \\
+				& acc\_y & 15.537 & 15.564 & \textbf{7.540} \\
+				& acc\_x & 36.388 & \textbf{32.363} & 38.208 \\
+				& gyr\_z & 25.892 & 12.686 & \textbf{6.574} \\
+				& gyr\_y & 10.286 & 17.241 & \textbf{3.165} \\
+				& gyr\_x & 12.907 & 29.840 & \textbf{3.941} \\
 				\hline   
 			\end{tabular}
 		\end{table}
