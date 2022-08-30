@@ -159,18 +159,6 @@ The paper introduces a new way for the consistent dimensional reduction of time 
 The proposed method combines the partial least squares method and convergent cross mapping method. 
 To demonstrate the results of the work we tackle the problem of hand trajectory reconstruction with video.}
 
-%%================================%%
-%% Sample for structured abstract %%
-%%================================%%
-
-% \abstract{\textbf{Purpose:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
-% 
-% \textbf{Methods:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
-% 
-% \textbf{Results:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.
-% 
-% \textbf{Conclusion:} The abstract serves both as a general introduction to the topic and as a brief, non-technical summary of the main results and their implications. The abstract must not include subheadings (unless expressly permitted in the journal's Instructions to Authors), equations or citations. As a guide the abstract should not exceed 200 words. Most journals do not set a hard limit however authors are advised to check the author instructions for the journal they are submitting to.}
-
 \keywords{Pose estimation, Time series, Phase trajectory, Trajectory subspace, Convergent cross mapping, Partial least squares}
 %%\pacs[JEL Classification]{D8, H51}
 
@@ -184,13 +172,14 @@ In this paper, we solve the problem of forecasting a target time series based on
 The challenge is to detect relationships between time series and exclude unrelated time series from the predictive model.
 Solving this problem improves model's quality.
 
-In this paper, we apply the convergent cross mapping method (CCM) or the Sugihara method \cite{Sugihara90, sugihara1990nonlinear}, 
-which is effective for time series acquired from a dynamic system.
-CCM compares of the nearest neighbors in the trajectory space of the time series $\by$ obtained from the time series $\bx$.
+We propose a new method for filtering multivariate time series. 
+It's based on the convergent cross mapping method (CCM) or the Sugihara method \cite{Sugihara90, sugihara1990nonlinear},
+which outputs the measure of the feature importance.
+CCM compares the nearest neighbors in the trajectory space of the time series $\by$ obtained from the time series $\bx$.
 
-To construct a \textbf{predictive model}, one has to use a trajectory matrix (or HASKEL matrix) that describes the phase space of a time series.
-For example, in the method of singular spectral analysis (SSA) \cite {golyandina2005ssa, golyandina2001analysis, zhigljavsky2010singular}, the time series \textbf{predictive model} is based on the spectral decomposition of the trajectory matrix.
-In CCM, HASKEL matrices are used for checking the presence of a Lipschitz mapping between trajectory spaces.
+To construct a predictive model, one has to use a trajectory matrix (or Hankel matrix) that describes the phase space of a time series.
+For example, in the method of singular spectral analysis (SSA) \cite {golyandina2005ssa, golyandina2001analysis, zhigljavsky2010singular, ignatov2016har}, the time series predictive model is based on the spectral decomposition of the trajectory matrix.
+In CCM, Hankel matrices are used for checking the presence of a Lipschitz mapping between trajectory spaces.
 
 However, the dimension of the trajectory space may be extremely high, 
 which leads to instability of the predictive model.
@@ -201,12 +190,12 @@ In the work \cite{alexandrov2005automatic} automatic selection of a pair of prin
 The main idea is to compare the spectral densities of the principal components. 
 A simple iteration over the principal components \cite{usmanova2019dependencies} is also used.
 
-The partial least squares method (PLS) \cite{rosipal2011nonlinear, rosipal2005overview} selects the most significant features and builds new ones as their linear combination.
+The partial least squares method (PLS) \cite{rosipal2005overview, sun2019application} is a popular algorithm for dimensionality reduction problem. It selects the most significant features and builds new ones as their linear combination.
 This allows us to obtain a simple, accurate and stable predictive model.
-Along with PLS, the canonical correlation analysis (CCA) [?] method is used. 
+The canonical correlation analysis (CCA) \cite{hardoon2004canonical} is another dimensionality reduction method, which is used in medicine \cite{sadoughi2016application}, gait recognition \cite{xing2016complete} and speech enhancement \cite{benesty2018canonical}. 
 It is similar to PLS except that the PLS method maximizes the covariance between projections, and the CCA method — correlation.
 The disadvantage of these models is the low accuracy in estimating nonlinear dependencies between data.
-The nonlinear extensions of PLS \cite{qin1992nonlinear} have been proposed.
+The nonlinear extensions of PLS \cite{qin1992nonlinear, rosipal2011nonlinear} have been proposed.
 This article uses the PLS-Autoencoder model \cite{wiering2013neural}, which converts the source data using autoencoders.
 
 \begingroup
@@ -222,8 +211,8 @@ This article uses the PLS-Autoencoder model \cite{wiering2013neural}, which conv
 		highly correlated features and noise in the data & Poor prediction quality when working with data with non-linear dependencies & No \\
 		\hline
 		Multiview (iteration through subspaces) & Simplicity of idea and implementation & Huge amount of time & No\\
-		\hline
-		Selection of a pair of principal components & TODO & TODO & No \\
+%		\hline
+%		Selection of a pair of principal components & TODO & TODO & No \\
 		\hline
 		Nonlinear extensions of PLS (PLS-Autoencoder, PLS-CCM) & Higher generalizing ability & More hyperparameters, less resistant to data noise & Yes \\
 		\hline
@@ -236,7 +225,7 @@ To achieve the latter goal, a new loss function for the consistency of latent pr
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{alphapose_pipeline.pdf}
-	\caption{The pipeline of video processing. [DESCRIBE IN DETAIL]}
+	\caption{The pipeline of video processing.}
 	\label{fig:alphapose_pipeline}
 \end{figure}
 
@@ -283,7 +272,7 @@ Therefore, the following pipeline for predicting the target variable is proposed
 \end{enumerate}
 
 \begin{figure}[bhtp]
-	\includegraphics[width=\textwidth]{paint_diagram.png}
+	\includegraphics[width=\textwidth]{inference_pipeline}
 	\caption{Inference pipeline of the prediction model}
 \end{figure}
 
@@ -353,7 +342,7 @@ One can choose a fixed amount of mostly correlated auxiliary time series or filt
 \subsection{PLS method}
 Another way to solve above stated problem is to reduce the dimension in a consistent manner.
 The partial least squares method restores the relationship between the datasets $\bX$ and $\bY$.
-The object matrix $\bX$ and the target matrix $\bY$ are projected onto the latent space $\dR^l$ of smaller dimension as follows:
+The object matrix $\bX$ and the target matrix $\bY$ are projected onto the latent space $\dR^K$ of smaller dimension as follows:
 $$ \underset{n \times d}{\bX} = \underset{n \times K}{\bT} \cdot \underset{K \times d}{\bP\T} + \underset{n \times d}{\bE} $$
 $$ \underset{n \times s}{\bY} = \underset{n \times K}{\bU} \cdot \underset{K \times s}{\bQ\T} + \underset{n \times s}{\bF}, $$
 where $\bT$ and $\bU$ ~--- matrices describing objects and targets in the latent space, $\bP$ and $\bQ$ --- transition matrices from the latent space to the original, $\bE$ and $\bF$ --- remainder matrices.
@@ -425,8 +414,8 @@ The loss function of this model has the form:
 \begin{gather*}
 	\mathcal{L} = \lambda_1 \cdot \mathcal{L}^X_{\text{recov}}(\bX, \hat{\bX}) + \lambda_2 \cdot \mathcal{L}^Y_{\text{recov}}(\bY, \hat{\bY}) + \lambda_3 \cdot \mathcal{L}_{\text{cons}}(\bT, \bU), 
 	\qquad \lambda_1, \lambda_2, \lambda_3 > 0,	\\
-	\mathcal{L}^X_{\text{recov}}(\bX, \hat{\bX}) = || \bX - \hat{\bX}||_2^2 \: , \text{ where } \hat{\bX} = \phi_{\text{dec}}(\phi_{\text{enc}}(\bX)), \\
-	\mathcal{L}^Y_{\text{recov}}(\bY, \hat{\bY}) = || \bY - \hat{\bY}||_2^2 \: , \text{ where } \hat{\bY} = \psi_{\text{dec}}(\psi_{\text{enc}}(\bY)), \\
+	\mathcal{L}^X_{\text{recov}}(\bX, \hat{\bX}) = \| \bX - \hat{\bX}\|_2^2 \: , \text{ where } \hat{\bX} = \varphi_{\text{dec}}(\varphi_{\text{enc}}(\bX)), \\
+	\mathcal{L}^Y_{\text{recov}}(\bY, \hat{\bY}) = \| \bY - \hat{\bY}\|_2^2 \: , \text{ where } \hat{\bY} = \psi_{\text{dec}}(\psi_{\text{enc}}(\bY)), \\
 	\mathcal{L}_{\text{cons}}(\bT, \bU) = \dfrac{1}{1 + \left( \frac{1}{n} \, \text{tr}\bigl(\bU_{\text{centered}}\T \bT_{\text{centered}} \bigr) \right)^2}
 \end{gather*}
 where $\mathcal{L}_{\text{recov}}$ is responsible for how accurately the original data is restored from their projections into the latent space, and $\mathcal{L}_{\text{cons}}$ is responsible for the connectivity of low-dimensional latent representations.
@@ -534,11 +523,12 @@ This means that the input data will be multi-index matrices.
 %% system, please include the references within the manuscript file itself. You may do this  %%
 %% by copying the reference list from your .bbl file, paste it into the main manuscript .tex %%
 %% file, and delete the associated \verb+\bibliography+ commands.                            %%
-%%===========================================================================================%%
+%%=====================================	======================================================%%
 
+\bibliographystyle{bst/sn-mathphys}
 \bibliography{sn-bibliography}% common bib file
 %% if required, the content of .bbl file can be included here once bbl is generated
-%%\input sn-article.bbl
+%\input{Vladimirov2022RestoringHandMovementENG.bbl}
 
 %% Default %%
 %%\input sn-sample-bib.tex%
